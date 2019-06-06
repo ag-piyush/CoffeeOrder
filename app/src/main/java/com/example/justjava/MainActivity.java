@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String quantityMessage="Total Item count:"+quantity+" coffees";
-        String priceMessage=quantityMessage+"\nTotal Price: $"+quantity*5;
-        displayMessage(priceMessage);
+        displayMessage(createOrderSummary());
 
     }
 
@@ -88,5 +86,18 @@ public class MainActivity extends AppCompatActivity {
     private int calculatePrice(int quantity) {
         int price = quantity * 5;
         return price;
+    }
+
+    /**
+     * Creates an order summary
+     */
+
+    private String createOrderSummary()
+    {
+        String order="Name: Piyush Agarwal";
+        order +="\nQuantity: "+quantity;
+        order +="\nTotal: "+calculatePrice(quantity);
+        order +="\nThank you!";
+        return order;
     }
 }
