@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the minus button is clicked.
      */
     public void decrement(View view) {
-        quantity=quantity-1;
+        if(quantity>0) {
+            quantity = quantity - 1;
+        }
         display(quantity);
     }
 
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         EditText text = (EditText) findViewById(R.id.name_field);
         String name = text.getText().toString();
-        displayMessage(createOrderSummary(hasWhippedCream, hasChocolate, name));
+        displayMessage(createOrderSummary(hasWhippedCream, hasChocolate, name, basePricePerCup()));
     }
 
     /**
@@ -83,9 +85,27 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return the price
      */
-    private int calculatePrice(int quantity) {
-        int price = quantity * 5;
+    private int calculatePrice(int quantity, int rate) {
+        int price = quantity * rate;
         return price;
+    }
+
+    /**
+     * Updates price based on topping
+     */
+    private int basePricePerCup()
+    {
+        int price=5;
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
+        boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
+        CheckBox chocolateCheckbox = (CheckBox) findViewById(R.id.chocolate_checkbox);
+        boolean hasChocolate = chocolateCheckbox.isChecked();
+        if(hasWhippedCream)
+            price++;
+        if(hasChocolate)
+            price=price+2;
+        return price;
+
     }
 
     /**
@@ -97,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
      * @return text summary
      */
 
-    private String createOrderSummary(boolean addWhippedCream, boolean addChocolate, String name)
+    private String createOrderSummary(boolean addWhippedCream, boolean addChocolate, String name, int rate)
     {
         String orderSummary ="\nName: "+name;
         orderSummary +="\nAdd Whipped Cream? "+addWhippedCream;
         orderSummary +="\nAdd Chocolate? "+addChocolate;
         orderSummary +="\nQuantity: "+quantity;
-        orderSummary +="\nTotal: "+calculatePrice(quantity);
+        orderSummary +="\nTotal: "+calculatePrice(quantity, rate);
         orderSummary +="\nThank you!\n";
         return orderSummary;
     }
